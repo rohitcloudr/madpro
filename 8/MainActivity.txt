@@ -1,0 +1,34 @@
+package com.example.q8oslist;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.provider.Telephony;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+    ListView os;
+    ArrayAdapter<String> adapter;
+    String data[];
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        os=findViewById(R.id.os);
+        data=new String[]{"Windows","Linux","Ubuntu","Kali","MacOS","ChromeOS","MintOS","Android","Fedora"};
+        adapter=new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,data);
+        os.setAdapter(adapter);
+        os.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView tv=(TextView) view;
+                Toast.makeText(MainActivity.this, tv.getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}

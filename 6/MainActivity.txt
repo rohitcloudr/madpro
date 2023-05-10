@@ -1,0 +1,54 @@
+package com.example.q6radiobutton;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+RadioGroup gender;
+RadioButton r1,r2;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        r1=findViewById(R.id.rb1);
+        r2=findViewById(R.id.rb2);
+        gender=findViewById(R.id.gender);
+        r1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(r1.isChecked())
+                {
+                    Toast.makeText(MainActivity.this, "Radio Button 1 Selected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        r2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(r2.isChecked())
+                {
+                    Toast.makeText(MainActivity.this, "Radio Button 2 Selected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if(R.id.male==radioGroup.getCheckedRadioButtonId())
+                {
+                    Toast.makeText(MainActivity.this, "Male Selected", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this, "Female Selected", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+}

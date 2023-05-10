@@ -1,0 +1,33 @@
+package com.example.circular;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+
+public class MainActivity extends AppCompatActivity {
+
+    ProgressBar pb;
+    Button inc;
+    int progress=0;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        pb=findViewById(R.id.pbar);
+        inc=findViewById(R.id.btn);
+        inc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pb.setVisibility(View.VISIBLE);
+                if(progress==100)
+                    progress=0;
+                else
+                    progress+=10;
+                pb.setProgress(progress);
+            }
+        });
+    }
+}

@@ -1,0 +1,95 @@
+package com.example.q19bluetooth;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Set;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    Button btnOn, btnOff, btnVisible, btnListDevices;
+    ArrayList list;
+    ListView ls;
+    BluetoothAdapter adapter;
+    Set<BluetoothDevice> devices;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        btnOn = findViewById(R.id.btnOn);
+        btnOff = findViewById(R.id.btnOff);
+        btnVisible = findViewById(R.id.btnVisible);
+        btnListDevices = findViewById(R.id.btnListDevices);
+        ls = findViewById(R.id.listDevices);
+        btnVisible.setOnClickListener(this);
+        btnOff.setOnClickListener(this);
+        btnOn.setOnClickListener(this);
+        btnListDevices.setOnClickListener(this);
+        adapter = BluetoothAdapter.getDefaultAdapter();
+        list = new ArrayList();
+        if (adapter == null) {
+            Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_LONG).show();
+        }
+        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.BLUETOOTH_CONNECT)!=PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.BLUETOOTH_CONNECT},12);
+        }
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_ADVERTISE)!=PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.BLUETOOTH_ADVERTISE},17);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == btnOn) {
+            if (adapter.isEnabled()) {
+                Toast.makeText(this, "Already enabled", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(i,15);
+            }
+        }
+        if(view==btnOff)
+        {
+            if(!adapter.isEnabled())
+            {
+                Toast.makeText(this,"Already disabled",Toast.LENGTH_LONG).show();
+            }
+            else {
+                adapter.disable();
+                Toast.makeText(this,"Bluetooth disabled",Toast.LENGTH_LONG).show();
+            }
+        }
+        if(view==btnVisible)
+        {
+            Intent i=new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            startActivityForResult(i,0);
+        }
+        if(view==btnListDevices)
+        {
+            devices=BluetoothAdapter.getDefaultAdapter().getBondedDevices();
+            for(BluetoothDevice d:devices)
+            {
+                list.add(d.getName());
+            }
+            ArrayAdapter<String> ad=new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,list);
+            ls.setAdapter(ad);
+        }
+    }
+}
+

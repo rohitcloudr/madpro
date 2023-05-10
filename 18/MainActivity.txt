@@ -1,0 +1,28 @@
+package com.example.q18listavailsensor;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    SensorManager mgr;
+    TextView tv;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        tv=findViewById(R.id.sensor);
+        mgr=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        List <Sensor> ls=mgr.getSensorList(Sensor.TYPE_ALL);
+        for(Sensor s:ls)
+        {
+            tv.setText(tv.getText()+"\n"+s.getName()+"\t"+s.getType()+"\t"+s.getVendor());
+        }
+    }
+}
